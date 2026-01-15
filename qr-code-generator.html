@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>QR Code Generator | Mbed Academy</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: #f4f6f9;
+}
+
+.container {
+  max-width: 420px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+/* === FORM ELEMENTS SAME SIZE === */
+select,
+input,
+button {
+  width: 100%;
+  height: 44px;
+  padding: 10px 12px;
+  margin-top: 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* CUSTOM SELECT */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 18px;
+  padding-right: 36px;
+}
+
+button {
+  background: #1976d2;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+}
+
+button:hover {
+  background: #0d47a1;
+}
+
+button:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+}
+
+.hidden {
+  display: none;
+}
+
+.qr-box {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.error {
+  color: red;
+  font-size: 13px;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.note {
+  font-size: 12px;
+  color: #555;
+  margin-top: 10px;
+  text-align: center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>🔳 QR Code Generator</h1>
+
+<select id="type" onchange="updateFields()">
+  <option value="text">Text / URL</option>
+  <option value="whatsapp">WhatsApp</option>
+  <option value="email">Email</option>
+  <option value="phone">Phone</option>
+  <option value="wifi">Wi-Fi</option>
+  <option value="upi">UPI Payment</option>
+</select>
+
+<input id="main" placeholder="Enter text or URL">
+
+<input id="wa" class="hidden" placeholder="WhatsApp number (country code)">
+<input id="email" class="hidden" placeholder="Email address">
+<input id="subject" class="hidden" placeholder="Email subject">
+<input id="phone" class="hidden" placeholder="Phone number">
+<input id="ssid" class="hidden" placeholder="Wi-Fi SSID">
+<input id="pass" class="hidden" placeholder="Wi-Fi password">
+<input id="upi" class="hidden" placeholder="UPI ID (example@bank)">
+<input id="name" class="hidden" placeholder="Payee name">
+<input id="amount" class="hidden" placeholder="Amount (optional)">
+
+<div id="error" class="error"></div>
+
+<button onclick="generateQR()">Generate QR</button>
+<button id="downloadBtn" onclick="downloadQR()" disabled>Download QR</button>
+
+<div class="qr-box">
+  <canvas id="qr"></canvas>
+</div>
+
+<div class="note">
+  QR is generated only after valid input
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
+
+<script>
+const qr = new QRious({
+  element: document.getElementById("qr"),
+  size: 240
+});
+
+let isGenerated = false;
+
+function updateFields() {
+  document.querySelectorAll("input").forEach(i => i.classList.add("hidden"));
+  document.getElementById("error").textContent = "";
+  document.getElementById("downloadBtn").disabled = true;
+  isGenerated = false;
+  qr.value = "";
+
+  const t = type.value;
+
+  if (t === "text") main.classList.remove("hidden");
+  if (t === "whatsapp") wa.classList.remove("hidden");
+  if (t === "email") {
+    email.classList.remove("hidden");
+    subject.classList.remove("hidden");
+  }
+  if (t === "phone") phone.classList.remove("hidden");
+  if (t === "wifi") {
+    ssid.classList.remove("hidden");
+    pass.classList.remove("hidden");
+  }
+  if (t === "upi") {
+    upi.classList.remove("hidden");
+    name.classList.remove("hidden");
+    amount.classList.remove("hidden");
+  }
+}
+
+function generateQR() {
+  const t = type.value;
+  let value = "";
+
+  error.textContent = "";
+
+  if (t === "text") {
+    if (!main.value.trim()) return showError("Text or URL required");
+    value = main.value.trim();
+  }
+
+  if (t === "whatsapp") {
+    if (!/^\d{10,15}$/.test(wa.value))
+      return showError("Invalid WhatsApp number");
+    value = "https://wa.me/" + wa.value;
+  }
+
+  if (t === "email") {
+    if (!/^\S+@\S+\.\S+$/.test(email.value))
+      return showError("Invalid email address");
+    value = `mailto:${email.value}?subject=${encodeURIComponent(subject.value)}`;
+  }
+
+  if (t === "phone") {
+    if (!/^\+?\d{7,15}$/.test(phone.value))
+      return showError("Invalid phone number");
+    value = "tel:" + phone.value;
+  }
+
+  if (t === "wifi") {
+    if (!ssid.value.trim())
+      return showError("Wi-Fi SSID required");
+    value = `WIFI:T:WPA;S:${ssid.value};P:${pass.value};;`;
+  }
+
+  if (t === "upi") {
+    if (!/^[\w.-]+@[\w.-]+$/.test(upi.value))
+      return showError("Invalid UPI ID");
+    value = `upi://pay?pa=${upi.value}&pn=${name.value}&am=${amount.value}`;
+  }
+
+  qr.value = value;
+  isGenerated = true;
+  downloadBtn.disabled = false;
+}
+
+function showError(msg) {
+  error.textContent = msg;
+}
+
+function downloadQR() {
+  if (!isGenerated) return;
+
+  const link = document.createElement("a");
+  link.download = "qr-code.png";
+  link.href = qr.element.toDataURL();
+  link.click();
+}
+
+updateFields();
+</script>
+
+</body>
+</html>
