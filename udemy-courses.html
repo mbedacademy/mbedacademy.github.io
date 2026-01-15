@@ -1,1 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mbed Academy — Udemy Courses</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .courses-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .course-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+    .course-card:hover {
+      transform: translateY(-5px);
+    }
+    .course-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .course-card .content {
+      padding: 15px;
+    }
+    .course-card h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: #333;
+    }
+    .course-card p {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+    .course-card a {
+      display: inline-block;
+      background: #ff5722;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .course-card a:hover {
+      background: #e64a19;
+    }
 
+    /* ⭐ Rating */
+    .rating {
+      display: inline-block;
+      color: #ff9800;
+      font-size: 13px;
+      margin-left: 5px;
+      vertical-align: middle;
+    }
+    .rating span {
+      color: #333;
+      font-size: 13px;
+      margin-left: 5px;
+    }
+    /* WhatsApp Floating Button */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #25d366;
+      color: #fff;
+      border-radius: 50px;
+      padding: 12px 18px;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 999;
+    }
+    
+    .whatsapp-float:hover {
+      background-color: #1ebe5d;
+    }
+    
+    .whatsapp-float img {
+      width: 22px;
+      height: 22px;
+    }
+    .offer-highlight {
+    color: #ff0000;
+    font-weight: 700;
+    animation: pulseGlow 1.5s ease-in-out infinite;
+   }
+
+  @keyframes pulseGlow {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.6;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="site-header">
+  <div class="container">
+    <a class="brand" href="index.html">
+      <img src="assets/logo.png" alt="Mbed Academy" class="brand-logo" /> <!-- MODIFY HERE -->
+     <!-- <span class="brand-name">Embedded Electronics</span>  -->
+    </a>
+    <button class="menu-toggle" aria-label="Toggle navigation" onclick="toggleMenu()">☰</button>
+    <nav id="nav" class="nav">
+      <a href="index.html">Home</a>
+      <a class="active" href="premium-courses.html">Courses</a>
+      <a href="#">FAQ</a>
+      <a href="#">Contact</a>
+    </nav>
+  </div>
+</header>
+  <!-- Main Section -->
+
+  <!-- Main Udemy Section -->
+  <main class="container page">
+    <h1>🎓 Udemy Premium Courses</h1>
+    <p>Browse some popular Premium Udemy courses below.</p>
+
+    <section class="courses-grid">
+      <!-- Sample course cards -->
+      <article class="course-card">
+        <img src="assets/courses/premium_courses_udemy-1280x720-1.png" alt="Udemy Courses">
+        <div class="content">
+          <h3>C Programming For Beginners</h3>
+          <p>C Programming For Beginners - Master the C Language</p>
+          <a href="https://www.udemy.com/course/c-programming-for-beginners-" target="_blank">Go to Course</a>
+          <div class="rating">⭐⭐⭐⭐☆ <span> (4.4 Ratings)</span></div>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <img src="assets/courses/premium_courses_udemy-1280x720-1.png" alt="Udemy Courses">
+        <div class="content">
+          <h3>Advanced C Programming Course</h3>
+          <p>Become a True Master in Advanced C Programming</p>
+          <a href="https://www.udemy.com/course/advanced-c-programming-course/" target="_blank">Go to Course</a>
+          <div class="rating">⭐⭐⭐⭐☆ <span> (4.5 Ratings)</span></div>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <img src="assets/courses/premium_courses_udemy-1280x720-1.png" alt="Udemy Courses">
+        <div class="content">
+          <h3>Arduino For Beginners</h3>
+          <p>Arduino For Beginners - Complete Course with the ATmega328P</p>
+          <a href="https://www.udemy.com/course/arduino-for-beginners-complete-course/" target="_blank">Go to Course</a>
+          <div class="rating">⭐⭐⭐⭐☆ <span> (4.6 Ratings)</span></div>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <img src="assets/courses/premium_courses_udemy-1280x720-1.png" alt="Udemy Courses">
+        <div class="content">
+          <h3>PCB Design Course with Altium</h3>
+          <p>Crash Course Electronics and PCB Design with Altium CircuitMaker and Proteus</p>
+          <a href="https://www.udemy.com/course/crash-course-electronics-and-pcb-design/" target="_blank">Go to Course</a>
+          <div class="rating">⭐⭐⭐⭐☆ <span> (4.7 Ratings)</span></div>
+        </div>
+      </article>
+
+       <article class="course-card">
+        <img src="assets/courses/premium_courses_udemy-1280x720-1.png" alt="Udemy Courses">
+        <div class="content">
+          <h3>Complete Python Pro Bootcamp</h3>
+          <p>100 Days of Code™: The Complete Python Pro Bootcamp</p>
+          <a href="https://www.udemy.com/course/100-days-of-code/" target="_blank">Go to Course</a>
+          <div class="rating">⭐⭐⭐⭐☆ <span> (4.7 Ratings)</span></div>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <img src="assets/courses/premium_courses_udemy-1280x720-1.png" alt="Udemy Courses">
+        <div class="content">
+          <h3>Bare-Metal Programming (STM32)</h3>
+          <p>Embedded Systems Bare-Metal Programming Ground Up™ (STM32)</p>
+          <a href="https://www.udemy.com/course/embedded-systems-bare-metal-programming/" target="_blank">Go to Course</a>
+          <div class="rating">⭐⭐⭐⭐☆ <span> (4.5 Ratings)</span></div>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <img src="assets/courses/premium_courses_udemy-1280x720-1.png" alt="Udemy Courses">
+        <div class="content">
+          <h3>IoT App. Development (ESP32)</h3>
+          <p>IoT Application Development with the ESP32 Using the ESP-IDF</p>
+          <a href="https://www.udemy.com/course/iot-application-development-with-the-esp32-using-the-esp-idf/" target="_blank">Go to Course</a>
+          <div class="rating">⭐⭐⭐⭐☆ <span> (4.5 Ratings)</span></div>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <img src="assets/courses/premium_courses_udemy-1280x720-1.png" alt="Udemy Courses">
+        <div class="content">
+          <h3>Embedded System Engineer</h3>
+          <p>Become an Embedded System Engineer in this 60-Day Challenge</p>
+          <a href="https://www.udemy.com/course/become-an-embedded-system-engineer-30-days-challenge-embedded-system" target="_blank">Go to Course</a>
+          <div class="rating">⭐⭐⭐⭐☆ <span> (3.8 Ratings)</span></div>
+        </div>
+      </article>
+
+      <article class="course-card">
+        <img src="assets/courses/premium_courses_udemy-1280x720-2.png" alt="Udemy Courses">
+        <div class="content">
+          <h3>Adv. Embedded Systems Course</h3>
+          <p>Advanced Embedded Systems Bonus Courses with 300+ Recorded Sessions</p>
+          <a href="https://wa.me/919547394654?text=Hello%21%20I%20would%20like%20to%20request%20a%20demo%20for%20the%20Bonus%20Course.%20Please%20share%20the%20details." target="_blank">Demo Course</a>
+          <div class="rating">⭐⭐⭐⭐☆ <span> (4.5 Ratings)</span></div>
+        </div>
+      </article>
+    </section>
+
+      <section style="margin-top:40px">
+    <h2>📌 Important Information – Udemy Premium Embedded Systems Courses</h2>
+  
+    <div style="
+      background:#fff;
+      padding:20px;
+      border-left:5px solid #ff5722;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+      border-radius:6px;
+      font-size:15px;
+      line-height:1.7;
+    ">
+      <ul style="padding-left:18px; margin:0">
+      <li>These are <strong>Udemy Premium Embedded Systems Courses (English)</strong>.</li>
+      <li><strong>Lifetime access</strong> is included.</li>
+      <li>The standard price for access to all listed courses is <strong>₹751</strong>.</li>
+      <li>After successful payment, the <strong>Udemy login credentials</strong> will be shared.</li>
+      <li>Login to Udemy via 👉 <a href="https://www.udemy.com/" target="_blank">https://www.udemy.com/</a></li>
+      <li>For the best learning experience, we recommend using the <strong>Google Chrome browser</strong>.</li>
+      <li>You will receive <strong>complete access to all course materials</strong> and can learn at your own pace.</li>
+      <li>Including Embedded Systems <strong>Bonus Courses</strong> with 300+ Recorded Sessions.</li>
+      <li>In-depth <strong>Microcontrollers Training</strong> on <strong>PIC, 8051 & ARM</strong> architectures.</li>
+      <li>Advanced topics in <strong>Embedded Linux, RTOS & Communication Protocols</strong> including <strong>CAN & TCP/IP</strong>.</li>
+      <li>Dedicated <strong>Interview Preparation & Internship Guidance</strong> for Embedded careers.</li>
+      <li>Enjoy <strong>Lifetime Access</strong> to all courses and future updates.</li>
+      <li>Includes <strong>Free Notes, PDFs & Downloadable Resources</strong>.</li>
+      <li class="offer-highlight">
+        Special offer price: ₹555 (valid up to 18th Jan, 2026)
+      </li>
+      </ul>
+    </div>
+  </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Mbed Academy</p>
+    </div>
+  </footer>
+
+  <script>
+    // Auto update year
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+  <!-- WhatsApp Chat Button -->
+  <a
+    href="https://wa.me/919547394654?text=Hello%21%20I%20want%20to%20buy%20Udemy%20Premium%20Courses.%20Can%20I%20get%20more%20info%20on%20this%3F"
+    class="whatsapp-float"
+    target="_blank"
+  >
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+    Chat on WhatsApp
+  </a>
+</body>
+</html>
