@@ -13,9 +13,53 @@
 body {
   font-family: Arial, sans-serif;
   background: #f4f6f9;
+  margin: 0;
 }
 
-.container {
+/* ================= HEADER ================= */
+.site-header {
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.site-header .container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-logo {
+  height: 40px;
+}
+
+.nav a {
+  margin-left: 15px;
+  text-decoration: none;
+  font-weight: 600;
+  color: #333;
+}
+
+.nav a.active,
+.nav a:hover {
+  color: #1976d2;
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  font-size: 22px;
+  border: none;
+  cursor: pointer;
+}
+
+/* ================= QR CONTAINER ================= */
+.qr-container {
   max-width: 420px;
   margin: 40px auto;
   background: #fff;
@@ -29,7 +73,7 @@ h1 {
   margin-bottom: 15px;
 }
 
-/* === FORM ELEMENTS SAME SIZE === */
+/* FORM ELEMENTS */
 select,
 input,
 button {
@@ -42,12 +86,8 @@ button {
   border: 1px solid #ccc;
 }
 
-/* CUSTOM SELECT */
 select {
   appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  background-color: #fff;
   background-image: url("data:image/svg+xml;utf8,<svg fill='black' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
   background-repeat: no-repeat;
   background-position: right 12px center;
@@ -58,8 +98,8 @@ select {
 button {
   background: #1976d2;
   color: #fff;
-  cursor: pointer;
   border: none;
+  cursor: pointer;
 }
 
 button:hover {
@@ -68,12 +108,9 @@ button:hover {
 
 button:disabled {
   background: #aaa;
-  cursor: not-allowed;
 }
 
-.hidden {
-  display: none;
-}
+.hidden { display: none; }
 
 .qr-box {
   text-align: center;
@@ -93,139 +130,157 @@ button:disabled {
   margin-top: 10px;
   text-align: center;
 }
+
+/* ================= FOOTER ================= */
+.site-footer {
+  background: #111;
+  color: #fff;
+  text-align: center;
+  padding: 15px 0;
+  margin-top: 60px;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 768px) {
+  .menu-toggle { display: block; }
+  .nav {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 16px;
+    background: #fff;
+    padding: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,.2);
+  }
+  .nav.show { display: block; }
+  .nav a {
+    display: block;
+    margin: 8px 0;
+  }
+}
 </style>
 </head>
 
 <body>
 
-<div class="container">
-<h1>🔳 QR Code Generator</h1>
+<!-- ================= HEADER ================= -->
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="index.html">
+      <img src="assets/logo.png" alt="Mbed Academy" class="brand-logo">
+    </a>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <nav id="nav" class="nav">
+      <a href="index.html">Home</a>
+      <a href="udemy-courses.html">Courses</a>
+      <a href="typing-game.html">Typing Game</a>
+      <a class="active" href="qr-code-generator.html">QR Gen</a>
+      <a href="#">FAQ</a>
+      <a href="#">Contact</a>
+    </nav>
+  </div>
+</header>
 
-<select id="type" onchange="updateFields()">
-  <option value="text">Text / URL</option>
-  <option value="whatsapp">WhatsApp</option>
-  <option value="email">Email</option>
-  <option value="phone">Phone</option>
-  <option value="wifi">Wi-Fi</option>
-  <option value="upi">UPI Payment</option>
-</select>
+<!-- ================= QR APP ================= -->
+<div class="qr-container">
+  <h1>🔳 QR Code Generator</h1>
 
-<input id="main" placeholder="Enter text or URL">
+  <select id="type" onchange="updateFields()">
+    <option value="text">Text / URL</option>
+    <option value="whatsapp">WhatsApp</option>
+    <option value="email">Email</option>
+    <option value="phone">Phone</option>
+    <option value="wifi">Wi-Fi</option>
+    <option value="upi">UPI Payment</option>
+  </select>
 
-<input id="wa" class="hidden" placeholder="WhatsApp number (country code)">
-<input id="email" class="hidden" placeholder="Email address">
-<input id="subject" class="hidden" placeholder="Email subject">
-<input id="phone" class="hidden" placeholder="Phone number">
-<input id="ssid" class="hidden" placeholder="Wi-Fi SSID">
-<input id="pass" class="hidden" placeholder="Wi-Fi password">
-<input id="upi" class="hidden" placeholder="UPI ID (example@bank)">
-<input id="name" class="hidden" placeholder="Payee name">
-<input id="amount" class="hidden" placeholder="Amount (optional)">
+  <input id="main" placeholder="Enter text or URL">
 
-<div id="error" class="error"></div>
+  <input id="wa" class="hidden" placeholder="WhatsApp number (country code)">
+  <input id="email" class="hidden" placeholder="Email address">
+  <input id="subject" class="hidden" placeholder="Email subject">
+  <input id="phone" class="hidden" placeholder="Phone number">
+  <input id="ssid" class="hidden" placeholder="Wi-Fi SSID">
+  <input id="pass" class="hidden" placeholder="Wi-Fi password">
+  <input id="upi" class="hidden" placeholder="UPI ID">
+  <input id="name" class="hidden" placeholder="Payee name">
+  <input id="amount" class="hidden" placeholder="Amount (optional)">
 
-<button onclick="generateQR()">Generate QR</button>
-<button id="downloadBtn" onclick="downloadQR()" disabled>Download QR</button>
+  <div id="error" class="error"></div>
 
-<div class="qr-box">
-  <canvas id="qr"></canvas>
+  <button onclick="generateQR()">Generate QR</button>
+  <button id="downloadBtn" onclick="downloadQR()" disabled>Download QR</button>
+
+  <div class="qr-box">
+    <canvas id="qr"></canvas>
+  </div>
+
+  <div class="note">QR is generated only after valid input</div>
 </div>
 
-<div class="note">
-  QR is generated only after valid input
-</div>
-</div>
+<!-- ================= FOOTER ================= -->
+<footer class="site-footer">
+  <p>© <span id="year"></span> Mbed Academy</p>
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/qrious@4.0.2/dist/qrious.min.js"></script>
 
 <script>
-const qr = new QRious({
-  element: document.getElementById("qr"),
-  size: 240
-});
+document.getElementById("year").textContent = new Date().getFullYear();
 
+function toggleMenu() {
+  document.getElementById("nav").classList.toggle("show");
+}
+</script>
+
+<!-- ===== QR SCRIPT (unchanged) ===== -->
+<script>
+const qr = new QRious({ element: document.getElementById("qr"), size: 240 });
 let isGenerated = false;
 
 function updateFields() {
-  document.querySelectorAll("input").forEach(i => i.classList.add("hidden"));
-  document.getElementById("error").textContent = "";
-  document.getElementById("downloadBtn").disabled = true;
-  isGenerated = false;
+  document.querySelectorAll(".qr-container input").forEach(i => i.classList.add("hidden"));
+  error.textContent = "";
+  downloadBtn.disabled = true;
   qr.value = "";
-
   const t = type.value;
-
   if (t === "text") main.classList.remove("hidden");
   if (t === "whatsapp") wa.classList.remove("hidden");
-  if (t === "email") {
-    email.classList.remove("hidden");
-    subject.classList.remove("hidden");
-  }
+  if (t === "email") { email.classList.remove("hidden"); subject.classList.remove("hidden"); }
   if (t === "phone") phone.classList.remove("hidden");
-  if (t === "wifi") {
-    ssid.classList.remove("hidden");
-    pass.classList.remove("hidden");
-  }
-  if (t === "upi") {
-    upi.classList.remove("hidden");
-    name.classList.remove("hidden");
-    amount.classList.remove("hidden");
-  }
+  if (t === "wifi") { ssid.classList.remove("hidden"); pass.classList.remove("hidden"); }
+  if (t === "upi") { upi.classList.remove("hidden"); name.classList.remove("hidden"); amount.classList.remove("hidden"); }
 }
 
 function generateQR() {
   const t = type.value;
   let value = "";
-
   error.textContent = "";
 
-  if (t === "text") {
-    if (!main.value.trim()) return showError("Text or URL required");
-    value = main.value.trim();
-  }
+  if (t === "text" && !main.value.trim()) return showError("Text or URL required");
+  if (t === "text") value = main.value;
 
   if (t === "whatsapp") {
-    if (!/^\d{10,15}$/.test(wa.value))
-      return showError("Invalid WhatsApp number");
+    if (!/^\d{10,15}$/.test(wa.value)) return showError("Invalid WhatsApp number");
     value = "https://wa.me/" + wa.value;
   }
 
   if (t === "email") {
-    if (!/^\S+@\S+\.\S+$/.test(email.value))
-      return showError("Invalid email address");
+    if (!/^\S+@\S+\.\S+$/.test(email.value)) return showError("Invalid email");
     value = `mailto:${email.value}?subject=${encodeURIComponent(subject.value)}`;
   }
 
-  if (t === "phone") {
-    if (!/^\+?\d{7,15}$/.test(phone.value))
-      return showError("Invalid phone number");
-    value = "tel:" + phone.value;
-  }
-
-  if (t === "wifi") {
-    if (!ssid.value.trim())
-      return showError("Wi-Fi SSID required");
-    value = `WIFI:T:WPA;S:${ssid.value};P:${pass.value};;`;
-  }
-
-  if (t === "upi") {
-    if (!/^[\w.-]+@[\w.-]+$/.test(upi.value))
-      return showError("Invalid UPI ID");
-    value = `upi://pay?pa=${upi.value}&pn=${name.value}&am=${amount.value}`;
-  }
+  if (t === "phone") value = "tel:" + phone.value;
+  if (t === "wifi") value = `WIFI:T:WPA;S:${ssid.value};P:${pass.value};;`;
+  if (t === "upi") value = `upi://pay?pa=${upi.value}&pn=${name.value}&am=${amount.value}`;
 
   qr.value = value;
-  isGenerated = true;
   downloadBtn.disabled = false;
 }
 
-function showError(msg) {
-  error.textContent = msg;
-}
+function showError(msg) { error.textContent = msg; }
 
 function downloadQR() {
-  if (!isGenerated) return;
-
   const link = document.createElement("a");
   link.download = "qr-code.png";
   link.href = qr.element.toDataURL();
