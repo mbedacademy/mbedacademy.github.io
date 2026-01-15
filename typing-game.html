@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Embedded Electronics — Typing Skill Test</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="scripts.js"></script>
+  <style>
+    body {
+      background: #f4f7fb;
+      font-family: "Segoe UI", Roboto, sans-serif;
+    }
+    .typing-card {
+      max-width: 820px; margin: 2rem auto;
+      background:#fff; border-radius:16px; padding:24px;
+      box-shadow:0 6px 20px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+    }
+    .typing-card:hover {
+      box-shadow:0 12px 28px rgba(0,0,0,0.12);
+    }
+    .typing-controls {
+      display:flex; gap:14px; flex-wrap:wrap; align-items:center; margin-bottom:16px;
+    }
+    .badge {
+      display:inline-flex;align-items:center;gap:6px;
+      background:linear-gradient(135deg,#e0f2ff,#f0faff);
+      border:1px solid #cce4ff;
+      color:#0a58a3;
+      padding:8px 14px; border-radius:999px;
+      font-weight:600;
+    }
+    .sentence-box {
+      border:1px solid #e0e6ed; 
+      background:#fafcff;
+      border-radius:10px;
+      padding:16px; margin:12px 0;
+      min-height:64px; font-size:1.08rem; line-height:1.6;
+    }
+    .typing-input {
+      width:100%; height:110px; resize:vertical;
+      font-size:1rem; border:1px solid #dbe3ec; border-radius:10px;
+      padding:10px; outline:none;
+      transition: border 0.2s;
+    }
+    .typing-input:focus {
+      border-color:#3b82f6; box-shadow:0 0 0 3px rgba(59,130,246,0.2);
+    }
+    .stat-row {
+      display:flex; gap:14px; flex-wrap:wrap; margin-top:12px
+    }
+    .stat {
+      flex:1;
+      background:#f9fafc;
+      border:1px solid #e4ebf2;
+      padding:10px 14px; border-radius:10px;
+      text-align:center;
+      font-size:0.95rem;
+    }
+    .result {
+      margin-top:16px;
+      padding:16px;
+      border-left:5px solid #4caf50;
+      background:#eafbea;
+      border-radius:10px;
+      display:none;
+      animation: fadeIn 0.5s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity:0; transform:translateY(6px);}
+      to {opacity:1; transform:translateY(0);}
+    }
+    .btn {
+      background:linear-gradient(135deg,#3b82f6,#2563eb);
+      color:white; border:none;
+      padding:8px 18px; border-radius:8px;
+      font-weight:600; cursor:pointer;
+      transition:all 0.2s;
+    }
+    .btn:hover { background:linear-gradient(135deg,#2563eb,#1d4ed8);}
+    .btn.secondary {
+      background:#fff; color:#2563eb;
+      border:1px solid #2563eb;
+    }
+    .btn.secondary:hover {
+      background:#f0f6ff;
+    }
+    .muted-sm { color:#6c7a90; font-size:0.9rem; }
+    /* Timer progress bar */
+    .timer-bar {
+      width:100%; height:6px; border-radius:4px;
+      background:#e0ecff; overflow:hidden;
+      margin-top:4px;
+    }
+    .timer-bar-inner {
+      height:100%; width:100%;
+      background:linear-gradient(90deg,#0ea5e9,#3b82f6);
+      transition: width 1s linear;
+    }
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="container">
+    <a class="brand" href="index.html">
+      <img src="assets/logo.png" alt="Logo" class="brand-logo" />
+    </a>
+    <button class="menu-toggle" aria-label="Toggle navigation" onclick="toggleMenu()">☰</button>
+    <nav id="nav" class="nav">
+        <a href="index.html">Home</a>
+        <a href="projects.html">Projects</a>
+        <!-- <a href="course.html">Courses</a> -->
+        <a href="ebooks.html">E-Books</a>
+        <a href="quiz.html">Quiz</a>
+        <!-- <a href="blog.html">Blog</a> -->
+        <a class="active" href="typing-game.html">Typing Test</a>
+        <a href="interview.html">Interview</a>
+        <a href="iq-test.html">IQ Test</a>
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container page">
+  <header class="page-header">
+    <h1>Typing Skill Test</h1>
+    <p class="muted-sm">Choose a difficulty, start the timer, type the sentence, and press <strong>Enter</strong> to finish. If time ends, results show automatically.</p>
+  </header>
+
+  <section class="typing-card">
+    <div class="typing-controls">
+      <label style="min-width:160px;">
+        <select id="difficulty">
+          <option value="easy">Easy</option>
+          <option value="medium" selected>Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </label>
+      <span class="badge">⏱ Time left: <span id="time-left">00:00</span></span>
+      <button class="btn" id="startBtn">Start</button>
+      <button class="btn secondary" id="resetBtn" disabled>Reset</button>
+    </div>
+    <div class="timer-bar"><div class="timer-bar-inner" id="timerBar"></div></div>
+
+    <div id="sentence" class="sentence-box"></div>
+    <textarea id="typing" class="typing-input" placeholder="Start typing here…" disabled></textarea>
+
+    <div class="stat-row">
+      <div class="stat">Elapsed: <strong><span id="elapsed">0</span>s</strong></div>
+      <div class="stat">Gross WPM: <strong><span id="gwpm">0</span></strong></div>
+      <div class="stat">Accuracy: <strong><span id="acc">0</span>%</strong></div>
+      <div class="stat">Net WPM: <strong><span id="nwpm">0</span></strong></div>
+    </div>
+
+    <div id="result" class="result"></div>
+    <p class="muted-sm" style="margin-top:10px">Tip: Press <kbd>Enter</kbd> any time to submit early.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p>© <span id="year"></span> Mbed Academy</p>
+  </div>
+</footer>
+
+<script>
+/* Sentences and limits */
+const SENTENCES = {
+  easy: [
+    "Believe in yourself.",
+    "You can do hard things.",
+    "Stay positive and strong.",
+    "Dream big and start small.",
+    "Never give up on hope.",
+    "Small steps lead to success.",
+    "Be kind to yourself today."
+  ],
+  medium: [
+    "Success is the sum of small efforts repeated daily.",
+    "Your only limit is your mind, so think big.",
+    "Stay focused, stay humble, and keep going.",
+    "Great things never come from comfort zones.",
+    "Discipline is the bridge between goals and success.",
+    "When it rains, look for rainbows. When it is dark, look for stars.",
+    "Hard work beats talent when talent doesn’t work hard."
+  ],
+  hard: [
+    "The future belongs to those who believe in the beauty of their dreams.",
+    "Challenges are what make life interesting and overcoming them is what makes life meaningful.",
+    "Don’t watch the clock; do what it does and keep going until you achieve greatness.",
+    "Strength doesn’t come from what you can do. It comes from overcoming the things you once thought you couldn’t.",
+    "The harder you work for something, the greater you will feel when you achieve it.",
+    "Push yourself, because no one else is going to do it for you every single day.",
+    "Success is not final, failure is not fatal: it is the courage to continue that counts."
+  ]
+};
+const TIME_LIMITS = { easy: 60, medium: 45, hard: 30 };
+
+let current="", timer=null, startedAt=0, timeLeft=0, finished=false;
+
+/* Elements */
+const $difficulty=document.getElementById('difficulty');
+const $timeLeft=document.getElementById('time-left');
+const $start=document.getElementById('startBtn');
+const $reset=document.getElementById('resetBtn');
+const $sentence=document.getElementById('sentence');
+const $typing=document.getElementById('typing');
+const $elapsed=document.getElementById('elapsed');
+const $gwpm=document.getElementById('gwpm');
+const $acc=document.getElementById('acc');
+const $nwpm=document.getElementById('nwpm');
+const $result=document.getElementById('result');
+const $bar=document.getElementById('timerBar');
+
+/* Helpers */
+function pad(n){ return String(n).padStart(2,'0'); }
+function mmss(sec){ return `${pad(Math.floor(sec/60))}:${pad(sec%60)}`; }
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+/* Init */
+function initClock(){
+  timeLeft = TIME_LIMITS[$difficulty.value]||60;
+  $timeLeft.textContent=mmss(timeLeft);
+  $elapsed.textContent='0';
+  $bar.style.width="100%";
+}
+
+/* Start */
+function startTest(){
+  finished=false; $result.style.display='none';
+  $gwpm.textContent=$acc.textContent=$nwpm.textContent='0';
+  $typing.value=''; current=pick(SENTENCES[$difficulty.value]);
+  $sentence.textContent=current; initClock();
+  startedAt=Date.now(); $typing.disabled=false; $typing.focus();
+  $start.disabled=true; $difficulty.disabled=true; $reset.disabled=false;
+  if(timer) clearInterval(timer); timer=setInterval(tick,1000);
+}
+
+/* Tick */
+function tick(){
+  if(timeLeft<=0){ finishTest(true); return; }
+  timeLeft--; $timeLeft.textContent=mmss(timeLeft);
+  $bar.style.width=`${(timeLeft/(TIME_LIMITS[$difficulty.value]))*100}%`;
+  const elapsed=Math.max(0,Math.round((Date.now()-startedAt)/1000));
+  $elapsed.textContent=elapsed;
+  const {grossWPM,accuracy,netWPM}=computeStats($typing.value,current,elapsed||1);
+  $gwpm.textContent=Math.round(grossWPM);
+  $acc.textContent=Math.round(accuracy);
+  $nwpm.textContent=Math.round(netWPM);
+}
+
+/* Finish */
+function finishTest(timeUp=false){
+  if(finished) return; finished=true;
+  if(timer){clearInterval(timer); timer=null;}
+  const elapsed=Math.max(1,Math.round((Date.now()-startedAt)/1000));
+  const {grossWPM,accuracy,netWPM}=computeStats($typing.value,current,elapsed);
+  $gwpm.textContent=Math.round(grossWPM);
+  $acc.textContent=Math.round(accuracy);
+  $nwpm.textContent=Math.round(netWPM);
+  $result.style.display='block';
+  $result.innerHTML=`<h3>${timeUp?'⏳ Time up!':'✅ Submitted'}</h3>
+    <p><strong>Sentence:</strong> ${escapeHtml(current)}</p>
+    <p><strong>Your input:</strong> ${escapeHtml($typing.value||'(empty)')}</p>
+    <p><strong>Elapsed:</strong> ${elapsed}s | <strong>Gross WPM:</strong> ${Math.round(grossWPM)} | 
+    <strong>Accuracy:</strong> ${Math.round(accuracy)}% | <strong>Net WPM:</strong> ${Math.round(netWPM)}</p>`;
+  $typing.disabled=true; $start.disabled=false; $difficulty.disabled=false;
+}
+
+/* Reset */
+function resetTest(){
+  if(timer){clearInterval(timer); timer=null;}
+  $sentence.textContent=''; $typing.value=''; $typing.disabled=true;
+  $start.disabled=false; $difficulty.disabled=false; $reset.disabled=true;
+  $result.style.display='none'; initClock();
+  $elapsed.textContent=$gwpm.textContent=$acc.textContent=$nwpm.textContent='0';
+}
+
+/* Stats */
+function computeStats(typed,target,elapsedSec){
+  const maxLen=Math.max(typed.length,target.length);
+  let matches=0; for(let i=0;i<maxLen;i++){ if(typed[i]===target[i]) matches++; }
+  const accuracy=maxLen?(matches/maxLen)*100:0;
+  const grossWPM=elapsedSec>0?(typed.length/5)/(elapsedSec/60):0;
+  return {grossWPM,accuracy,netWPM:grossWPM*(accuracy/100)};
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;','\'':'&#39;'}[m]));}
+
+/* Events */
+$start.addEventListener('click',startTest);
+$reset.addEventListener('click',resetTest);
+$difficulty.addEventListener('change',initClock);
+$typing.addEventListener('keydown',e=>{ if(e.key==='Enter'){ e.preventDefault(); finishTest(false);} });
+
+initClock();
+</script>
+</body>
+</html>
